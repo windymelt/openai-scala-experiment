@@ -1,5 +1,8 @@
-@main def hello: Unit = 
-  println("Hello world!")
-  println(msg)
+package com.github.windymelt.openapiscalaexperiment
 
-def msg = "I was compiled by Scala 3. :)"
+import cats.effect.IOApp.Simple
+import cats.effect.IO
+
+object Main extends Simple {
+  def run: IO[Unit] = IO.println("IO App")
+}
