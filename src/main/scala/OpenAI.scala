@@ -3,21 +3,21 @@ package com.github.windymelt.openapiscalaexperiment
 import sttp.tapir._
 import sttp.tapir.generic.auto._
 import sttp.tapir.json.circe._
+import sttp.model.Header
+import sttp.model.MediaType
 import io.circe.generic.auto._
 
 object OpenAI {
-  type APIKey = String
-  val bearer = auth.bearer[String]()
   lazy val BasicEndpoint = endpoint
-    .securityIn(
-      bearer
-    )
+    .securityIn(auth.bearer[String]())
     .securityIn(header[String]("OpenAI-Organization"))
 
-  lazy val completion = BasicEndpoint
-    .in("v1" / "chat" / "completions")
-    .in(jsonBody[CompletionParams])
-    .out(jsonBody[CompletionResult])
+  lazy val completion =
+    BasicEndpoint.post // Watch! you may forget to write `post` here
+      .in("v1" / "chat" / "completions")
+      .in(jsonBody[CompletionParams])
+      .out(jsonBody[CompletionResult])
+      .errorOut(stringBody)
 
   case class CompletionParams(
       model: String,
@@ -36,13 +36,13 @@ object OpenAI {
       choices: Seq[CompletionResultChoice]
   )
   case class CompletionResultUsage(
-      promptTokens: Int,
-      completionTokens: Int,
-      totalTokens: Int
+      prompt_tokens: Int,
+      completion_tokens: Int,
+      total_tokens: Int
   )
   case class CompletionResultChoice(
       message: CompletionResultChoiceMessage,
-      finishReason: String,
+      finish_reason: String,
       index: Int
   )
   case class CompletionResultChoiceMessage(role: String, content: String)
