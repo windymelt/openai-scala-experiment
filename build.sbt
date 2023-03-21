@@ -11,6 +11,7 @@ lazy val root = project
     libraryDependencies ++= Seq(
       "com.softwaremill.sttp.tapir" %% "tapir-core" % "1.2.10",
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.2.10",
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % "1.2.10",
       "org.http4s" %% "http4s-ember-client" % http4sVersion,
       "org.http4s" %% "http4s-dsl" % http4sVersion
     ),
